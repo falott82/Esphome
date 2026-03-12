@@ -18,7 +18,7 @@ su:
 
 # Collegamenti hardware
 
-![Collegamenti sensore](wemos_vl53l0x.jpg)
+![Collegamenti sensore](Collegamenti.jpeg)
 
   D1 Mini   VL53L0X
   --------- ---------

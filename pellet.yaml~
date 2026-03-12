@@ -1,0 +1,54 @@
+esphome:
+  name: pellet
+
+esp8266:
+  board: d1_mini
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "wuxgO/ZUybR7W78gjwGT9iqE/VnsJgq3rx8osEvymW0="
+
+ota:
+  - platform: esphome
+
+
+wifi:
+  ssid: "UBNT"
+  password: "pass123123"
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Pellet Fallback Hotspot"
+    password: "BdeaeAlRRj28"
+
+captive_portal:
+
+i2c:
+  sda: D2
+  scl: D1
+  scan: true
+  id: bus_a
+
+sensor:
+  - platform: vl53l0x
+    id: distance_sensor
+    name: "Livello Pellet"
+    address: 0x29
+    update_interval: 10s
+    long_range: false
+
+  - platform: template
+    id: livello
+    name: "Livello pellet"
+    unit_of_measurement: "%"
+    update_interval: 1s
+    lambda: |-
+      if (isnan(id(distance_sensor).state)) return 0;
+      auto r = (id(distance_sensor).state - 0.8) * (100.0 - 0.0) / (0.1 - 0.8) + 0.0;
+      if (r > 100) return 100;
+      if (r < 0) return 0;
+      return r;    

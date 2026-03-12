@@ -20,12 +20,7 @@ su:
 
 ![Collegamenti sensore](Collegamenti.jpeg)
 
-  D1 Mini   VL53L0X
-  --------- ---------
-  5V        VIN
-  GND       GND
-  D1        SCL
-  D2        SDA
+5V -> VIN; GND -> GND; D1 -> SCL; D2 -> SDA
 
 ------------------------------------------------------------------------
 

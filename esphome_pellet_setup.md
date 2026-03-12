@@ -20,7 +20,12 @@ su:
 
 ![Collegamenti sensore](Collegamenti.jpeg)
 
-5V -> VIN; GND -> GND; D1 -> SCL; D2 -> SDA
+| Pin D1 Mini | Pin sensore VL53L0X | Significato |
+| --- | --- | --- |
+| 5V | VIN | Alimentazione positiva a 5 volt |
+| GND | GND | Massa / negativo dell'alimentazione |
+| D1 | SCL | Clock del bus I²C (linea di sincronizzazione) |
+| D2 | SDA | Dati del bus I²C (linea dati) |
 
 ------------------------------------------------------------------------
 

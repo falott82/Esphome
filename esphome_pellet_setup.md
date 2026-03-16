@@ -110,10 +110,38 @@ Esempio output:
 Aprire il file:
 
 ``` bash
-joe pellet.yaml
+vim pellet.yaml
 ```
 
-Inserire la configurazione sensore VL53L0X.
+Inserire questa configurazione:
+
+``` yaml
+i2c:
+  sda: D2
+  scl: D1
+  scan: true
+  id: bus_a
+
+sensor:
+  - platform: vl53l0x
+    id: distance_sensor
+    name: "Livello Pellet"
+    address: 0x29
+    update_interval: 10s
+    long_range: false
+
+  - platform: template
+    id: livello
+    name: livello pellet
+    unit_of_measurement: '%'
+    update_interval: 1s
+    lambda: |-
+      if (isnan(id(distance_sensor).state)) return 0;
+      auto r = (id(distance_sensor).state - 0.8) * (100.0 - 0.0) / (0.1 - 0.8) + 0.0;
+      if (r > 100) return 100;
+      if (r < 0) return 0;
+      return r;
+```
 
 ------------------------------------------------------------------------
 

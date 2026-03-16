@@ -36,14 +36,14 @@ i2c:
 sensor:
   - platform: vl53l0x
     id: distance_sensor
-    name: "Distanza pellet"
+    name: "Pellet Distance"
     address: 0x29
     update_interval: 10s
     long_range: false
 
   - platform: template
-    id: livello
-    name: "Livello pellet"
+    id: level
+    name: "Pellet Level"
     unit_of_measurement: "%"
     update_interval: 1s
     lambda: |-

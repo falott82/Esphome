@@ -1,12 +1,11 @@
 # ESPHome Pellet Level Sensor Setup (macOS / Windows / Linux)
 
-Guida per installare **ESPHome da zero su macOS, Windows o Linux** e caricare il firmware
-su:
+Guide to install **ESPHome from scratch on macOS, Windows, or Linux** and upload firmware for:
 
 -   AZDelivery **D1 Mini ESP8266**
 -   AZDelivery **VL53L0X ToF distance sensor**
 
-## Hardware usato
+## Hardware used
 
 -   D1 Mini ESP8266\
     https://www.amazon.it/dp/B01N9RXGHY
@@ -16,44 +15,44 @@ su:
 
 ------------------------------------------------------------------------
 
-# Collegamenti hardware
+# Hardware wiring
 
-![Collegamenti sensore](Collegamenti.jpeg)
+![Sensor wiring](Collegamenti.jpeg)
 
-| Pin D1 Mini | Pin sensore VL53L0X | Significato |
+| D1 Mini pin | VL53L0X sensor pin | Meaning |
 | --- | --- | --- |
-| 5V | VIN | Alimentazione positiva a 5 volt |
-| GND | GND | Massa / negativo dell'alimentazione |
-| D1 | SCL | Clock del bus I²C (linea di sincronizzazione) |
-| D2 | SDA | Dati del bus I²C (linea dati) |
+| 5V | VIN | Positive 5V power |
+| GND | GND | Ground / power negative |
+| D1 | SCL | I2C bus clock line |
+| D2 | SDA | I2C bus data line |
 
 ------------------------------------------------------------------------
 
-# 1 Installazione ESPHome (macOS / Windows / Linux)
+# 1 ESPHome installation (macOS / Windows / Linux)
 
-ESPHome serve per:
+ESPHome is used to:
 
-- creare la configurazione firmware tramite file YAML
-- compilare firmware per ESP8266/ESP32
-- caricare il firmware via USB e fare aggiornamenti OTA
-- esporre sensori e dispositivi in Home Assistant
+- create firmware configuration using YAML files
+- compile firmware for ESP8266/ESP32
+- upload firmware over USB and perform OTA updates
+- expose sensors and devices in Home Assistant
 
 ## macOS
 
-Installare `pipx`:
+Install `pipx`:
 
 ``` bash
 brew install pipx
 ```
 
-Aggiungere `pipx` al PATH:
+Add `pipx` to PATH:
 
 ``` bash
 pipx ensurepath
 exec $SHELL
 ```
 
-Installare ESPHome e verificare:
+Install ESPHome and verify:
 
 ``` bash
 pipx install esphome
@@ -62,14 +61,14 @@ esphome version
 
 ## Windows (PowerShell)
 
-Installare `pipx`:
+Install `pipx`:
 
 ``` powershell
 py -m pip install --user pipx
 py -m pipx ensurepath
 ```
 
-Chiudere e riaprire PowerShell, poi installare ESPHome:
+Close and reopen PowerShell, then install ESPHome:
 
 ``` powershell
 pipx install esphome
@@ -78,28 +77,28 @@ esphome version
 
 ## Linux
 
-Installare `pipx` (Debian/Ubuntu):
+Install `pipx` (Debian/Ubuntu):
 
 ``` bash
 sudo apt update
 sudo apt install -y pipx
 ```
 
-Aggiungere `pipx` al PATH:
+Add `pipx` to PATH:
 
 ``` bash
 pipx ensurepath
 exec $SHELL
 ```
 
-Installare ESPHome e verificare:
+Install ESPHome and verify:
 
 ``` bash
 pipx install esphome
 esphome version
 ```
 
-Se la tua distro non ha `pipx` nel package manager:
+If your distro does not provide `pipx` in the package manager:
 
 ``` bash
 python3 -m pip install --user pipx
@@ -108,7 +107,7 @@ python3 -m pipx ensurepath
 
 ------------------------------------------------------------------------
 
-# 2 Creare cartella progetto
+# 2 Create project folder
 
 ``` bash
 mkdir -p ~/Documents/GitHub/esphome
@@ -120,15 +119,15 @@ cd ~/Documents/GitHub/esphome
 
 ------------------------------------------------------------------------
 
-# 3 Creare configurazione ESPHome
+# 3 Create ESPHome configuration
 
-Lanciare il wizard:
+Run the wizard:
 
 ``` bash
 esphome wizard pellet.yaml
 ```
 
-Durante il wizard inserire:
+During the wizard, enter:
 
     board: d1_mini
     wifi ssid
@@ -136,29 +135,29 @@ Durante il wizard inserire:
 
 ------------------------------------------------------------------------
 
-# 4 Collegare il D1 Mini via USB
+# 4 Connect D1 Mini via USB
 
-Verificare la porta seriale:
+Check the serial port:
 
 ``` bash
 ls /dev/cu.*
 ```
 
-Esempio output:
+Example output:
 
     /dev/cu.usbserial-11320
 
 ------------------------------------------------------------------------
 
-# 5 Modificare configurazione
+# 5 Edit configuration
 
-Aprire il file:
+Open the file:
 
 ``` bash
 vim pellet.yaml
 ```
 
-Inserire questa configurazione:
+Insert this configuration:
 
 ``` yaml
 i2c:
@@ -170,14 +169,14 @@ i2c:
 sensor:
   - platform: vl53l0x
     id: distance_sensor
-    name: "Livello Pellet"
+    name: "Pellet Distance"
     address: 0x29
     update_interval: 10s
     long_range: false
 
   - platform: template
-    id: livello
-    name: livello pellet
+    id: level
+    name: "Pellet Level"
     unit_of_measurement: '%'
     update_interval: 1s
     lambda: |-
@@ -190,53 +189,53 @@ sensor:
 
 ------------------------------------------------------------------------
 
-# 6 Compilare e caricare firmware
+# 6 Compile and upload firmware
 
 ``` bash
 esphome run pellet.yaml
 ```
 
-Quando richiesto scegliere la porta USB:
+When prompted, select the USB port:
 
     1
 
-Esempio:
+Example:
 
     [1] /dev/cu.usbserial-11320
 
 ------------------------------------------------------------------------
 
-# 7 Verifica funzionamento
+# 7 Verify operation
 
-Nel log ESPHome dovresti vedere valori simili:
+In ESPHome logs, you should see values similar to:
 
-    Distanza pellet: 0.19 m
-    Livello pellet: 86 %
+    Pellet distance: 0.19 m
+    Pellet level: 86 %
 
 ------------------------------------------------------------------------
 
-# 8 Integrazione con Home Assistant
+# 8 Home Assistant integration
 
-Una volta connesso al WiFi:
+Once connected to Wi-Fi:
 
-    Impostazioni
-    Dispositivi e Servizi
+    Settings
+    Devices & Services
     ESPHome
-    Aggiungi dispositivo
+    Add device
 
-Inserire la **API key generata dal wizard**.
-
-------------------------------------------------------------------------
-
-# Sensori disponibili in Home Assistant
-
-    sensor.pellet_distanza_pellet
-    sensor.pellet_livello_pellet
+Enter the **API key generated by the wizard**.
 
 ------------------------------------------------------------------------
 
-# Dashboard esempio
+# Available sensors in Home Assistant
 
-    gauge → livello pellet
-    tile → distanza pellet
-    history graph → consumo pellet
+    sensor.pellet_pellet_distance
+    sensor.pellet_pellet_level
+
+------------------------------------------------------------------------
+
+# Example dashboard
+
+    gauge -> pellet level
+    tile -> pellet distance
+    history graph -> pellet consumption

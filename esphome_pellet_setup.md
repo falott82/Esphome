@@ -1,6 +1,6 @@
-# ESPHome Pellet Level Sensor Setup (Mac)
+# ESPHome Pellet Level Sensor Setup (macOS / Windows / Linux)
 
-Guida per installare **ESPHome da zero su macOS** e caricare il firmware
+Guida per installare **ESPHome da zero su macOS, Windows o Linux** e caricare il firmware
 su:
 
 -   AZDelivery **D1 Mini ESP8266**
@@ -29,36 +29,81 @@ su:
 
 ------------------------------------------------------------------------
 
-# 1 Installazione ESPHome su Mac
+# 1 Installazione ESPHome (macOS / Windows / Linux)
 
-Installare pipx:
+ESPHome serve per:
+
+- creare la configurazione firmware tramite file YAML
+- compilare firmware per ESP8266/ESP32
+- caricare il firmware via USB e fare aggiornamenti OTA
+- esporre sensori e dispositivi in Home Assistant
+
+## macOS
+
+Installare `pipx`:
 
 ``` bash
 brew install pipx
 ```
 
-Installare ESPHome:
-
-``` bash
-pipx install esphome
-```
-
-Aggiungere pipx al PATH:
+Aggiungere `pipx` al PATH:
 
 ``` bash
 pipx ensurepath
-```
-
-Ricaricare la shell:
-
-``` bash
 exec $SHELL
 ```
 
-Verificare installazione:
+Installare ESPHome e verificare:
 
 ``` bash
+pipx install esphome
 esphome version
+```
+
+## Windows (PowerShell)
+
+Installare `pipx`:
+
+``` powershell
+py -m pip install --user pipx
+py -m pipx ensurepath
+```
+
+Chiudere e riaprire PowerShell, poi installare ESPHome:
+
+``` powershell
+pipx install esphome
+esphome version
+```
+
+## Linux
+
+Installare `pipx` (Debian/Ubuntu):
+
+``` bash
+sudo apt update
+sudo apt install -y pipx
+```
+
+Aggiungere `pipx` al PATH:
+
+``` bash
+pipx ensurepath
+exec $SHELL
+```
+
+Installare ESPHome e verificare:
+
+``` bash
+pipx install esphome
+esphome version
+```
+
+Se la tua distro non ha `pipx` nel package manager:
+
+``` bash
+python3 -m pip install --user pipx
+python3 -m pipx ensurepath
 ```
 
 ------------------------------------------------------------------------

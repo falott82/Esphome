@@ -160,6 +160,35 @@ vim pellet.yaml
 Insert this configuration:
 
 ``` yaml
+esphome:
+  name: pellet
+
+esp8266:
+  board: d1_mini
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "YOUR_API_ENCRYPTION_KEY"
+
+ota:
+  - platform: esphome
+
+wifi:
+  ssid: "YOUR_WIFI_SSID"
+  password: "YOUR_WIFI_PASSWORD"
+  min_auth_mode: WPA2
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Pellet Fallback Hotspot"
+    password: "YOUR_FALLBACK_AP_PASSWORD"
+
+captive_portal:
+
 i2c:
   sda: D2
   scl: D1
@@ -177,7 +206,7 @@ sensor:
   - platform: template
     id: level
     name: "Pellet Level"
-    unit_of_measurement: '%'
+    unit_of_measurement: "%"
     update_interval: 1s
     lambda: |-
       if (isnan(id(distance_sensor).state)) return 0;
